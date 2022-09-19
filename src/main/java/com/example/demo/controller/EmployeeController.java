@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.demo.service.EmployeeService;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class EmployeeController {
@@ -21,4 +24,18 @@ public class EmployeeController {
 
 	}
 
+	@GetMapping("/showNewEmployeeForm")
+	public String showNewEmployeeForm(Model model) {
+		Employee employee = new Employee();
+		model.addAttribute("employee", employee);
+		return "new_employee";
+	}
+
+	@PostMapping("saveEmployee")
+	public String saveEmployee(@ModelAttribute("employee") Employee employee) {
+		// save employee to database
+		employeeService.saveEmployee(employee);
+		return "redirect:/";
+
+	}
 }
